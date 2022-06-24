@@ -1,0 +1,25 @@
+{
+  "type": "module",
+  "name": "chat-srv",
+  "version": "1.0.0",
+  "description": "",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "nodemon --ignore /personal --inspect ./src/server.js"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "axios": "^0.27.2",
+    "compression": "^1.7.4",
+    "dotenv": "^16.0.1",
+    "ejs": "^3.1.8",
+    "express": "^4.18.1",
+    "mssql": "^8.1.2",
+    "node-fetch": "^3.2.6",
+    "tedious": "^14.5.0",
+    "winston": "^3.7.2",
+    "winston-levelonly": "^1.0.3"
+  }
+}

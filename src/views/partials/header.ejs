@@ -1,0 +1,19 @@
+<% if (ruta=='root') { %>
+    <button class="btn btn-sm btn-warning btn-refresh" onclick="location.reload()"><i class="bi bi-arrow-clockwise"></i></button>
+    <h1>Lector Meli Flex</h1>
+<% } else if (ruta=='repa') { %>
+    <button class="btn btn-sm btn-warning btn-refresh" onclick="location.reload()"><i class="bi bi-arrow-clockwise"></i></button>
+    <h3>Registrar En Reparto</h3>
+<% } else if (ruta=='info') { %>
+    <button class="btn btn-sm btn-warning btn-refresh" onclick="location.reload()"><i class="bi bi-arrow-clockwise"></i></button>
+    <h2>Resumen del <%- fecha %></h2>
+<% } else if (ruta=='info.cliente') { %>
+    <button class="btn btn-sm btn-warning btn-refresh" onclick="location.reload()"><i class="bi bi-arrow-clockwise"></i></button>
+    <button class="btn btn-sm btn-info btn-atras" onclick="window.location.href='/info?<%= query %>'"><i class="bi bi-backspace-fill"></i> Atras</button>
+    <% if (se != 'true') {%>
+        <h3>Detalle del <%- fecha %></h3>
+    <%} else {%>
+        <h5>Detalle Sin Entregar</h5>
+    <%}%> 
+<% } %>
+

@@ -1,0 +1,142 @@
+<div class="container">
+    <div id="ventana">         
+      <div class="container">
+        <form id="form form-sm">
+          <div class="row">
+            <div class="col col-5 col-md-2">
+              <label class="form-control btn-info m-1">Cliente: </label>
+            </div>
+            <div class="col col-7 col-md-4">
+              <span class="form-control m-1"><%=nombres.nombreCliente%></span>
+            </div>
+            <div class="col col-5 col-md-2">
+                <label class="form-control btn-info m-1">Repartidor: </label>
+            </div>
+            <div class="col col-7 col-md-4">
+                <span class="form-control m-1"><%=nombres.nombreRepa%></span>
+            </div>
+            <div class="col col-5 col-md-2">
+                <label class="form-control btn-info m-1">Estado: </label>
+            </div>
+            <div class="col col-7 col-md-4">
+                <span class="form-control m-1">
+                    <% if (se != 'true') { %>
+                        <%= nombres.nombreEs %>
+                    <% } else { %>
+                        Sin Entregar
+                    <% } %>                        
+                </span>
+            </div>
+          </div>
+        </form>
+        <% if (datos.length>0) { %>
+            <table class="table table-responsive">
+                <thead>
+                    <tr align="center" class="d-flex">
+                        <% let col=7; %>
+                        <% if (se=='true') { %>
+                            <th class="col-1">Día</th>
+                            <% col=6; %>
+                        <% } %>
+                        <th class="col-5">Cliente</th>
+                        <th class="col-<%=col%>">Domicilio</th>               
+                    </tr>
+                </thead>
+                <tbody>
+                    <% let sa=0;let er=0;let en=0;%>                      
+                    <% datos.forEach((e) => {%>                      
+                        <tr  class="d-flex 
+                            <% if(e.es==0) { %>
+                                <% sa++; %>
+                                table-danger"
+                            <% } else if(e.es==1) { %>
+                                <% er++; %>
+                                 table-warning"
+                            <% } else if(e.es==2) { %>
+                                <% en++; %>
+                                 table-success"
+                            <% } %>
+                        >
+                        <% let col=7; %>
+                        <% if (se=='true') { %>
+                            <% col=6; %>
+                            <td class="col-1 
+                            <% if (se=='true') { %>
+                                dia
+                            <% } %>
+                            "><%= e.fh %></td>
+                        <% } %>
+                            <td class="col-5"><a href="#" onclick="generarQr('<%= e.jsonML %>', '<%= e.nombre+' '+e.apellido+' - '+e.nick %>')"><%= e.nombre+' '+e.apellido+' - '+e.nick %></a></td>
+                            <td class="col-<%=col%>">
+                                <%= e.domicilio+' '+e.nro+' - '+e.localidad %>
+                                <button class="btn btn-sm btn-info" onclick="pedirEntrega(<%= e.idEntrega %>)">Pedir</button>
+                            </td>
+                        </tr>                        
+                    <% }) %>
+                    <tr class="btn-info">
+                        <td colSpan="2">
+                            <% if(sa>0) { %><%= sa %> Sin Asignar - <%}%>
+                            <% if(er>0) { %><%= er %> En Reparto - <%}%>
+                            <% if(en>0) { %><%= en %> Entregados - <%}%>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        <% } else { %>
+            <div class="alert alert-warning m-3" role="alert">
+                <strong>No hay Entregas para la fecha y Filtros Seleccionados</strong>
+            </div>
+        <% } %> 
+        </div>
+    </div>
+    <!-- Modal -->
+    <div class="modal fade" id="mostrarQr" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="mostrarQrLabel" aria-hidden="true">
+        <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="mostrarQrLabel">QR Entrega de <span id="nombreQr"></span></h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div class="container">
+                    <div class="row justify-content-between">
+                        <div class="col col-12">
+                            <img alt="Código QR" id="qr" class="qr">
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Cerrar</button>
+            </div>
+        </div>
+        </div>
+    </div>
+    <div class="modal fade" id="mostrarDatos" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="mostrarDatosLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="mostrarDatosLabel">Datos Entrega</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="container">
+                        <table class="table table-sm tables-responsive table-success">
+                            <thead>
+                                <tr>
+                                    <th>Dato</th>
+                                    <th>Valor</th>
+                                </tr>
+                            </thead>
+                            <tbody id="detallePaquete">
+                            </tbody>    
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Cerrar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

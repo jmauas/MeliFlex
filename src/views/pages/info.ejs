@@ -1,0 +1,90 @@
+<div class="container">
+    <div id="ventana">         
+      <div class="container">
+        <form id="form">
+          <div class="row">
+            <div class="col col-5 col-md-2">
+              <label for="fecha" class="form-control btn-info m-1">Fecha: </label>
+            </div>
+            <div class="col col-7 col-md-4">
+              <input type="date" class="form-control m-1" id="fecha" value="<%=fechaT%>" onchange="cambioInfo()">
+              <div class="form-check form-switch">
+                <input class="form-check-input" type="checkbox" id="sinEntregar" onchange="cambioInfo()" 
+                    <% if (filtros.se=='true') {%> checked <%}%> >
+                <label class="form-check-label" for="sinEntregar">Todos Sin Entregar</label>
+              </div>
+            </div>
+            <div class="col col-5 col-md-2">
+                <label for="repa" class="form-control btn-info m-1">Repartidor: </label>
+            </div>
+            <div class="col col-7 col-md-4">
+                <select id="repa" class="form-select m-1"  onchange="cambioInfo()">
+                    <option value="0" <% if(filtros.repa==0) {%> selected <%}%> >Todos</option>
+                    <% datos.repar.forEach((repa) => {%>
+                       <option value="<%= repa.id %>" <% if(filtros.repa==repa.id) {%> selected <%}%>><%= repa.nombre %></option>    
+                    <% }) %>
+                </select>
+            </div>
+            <div class="col col-5 col-md-2">
+                <label for="tipos" class="form-control btn-info m-1">Tipo Envío: </label>
+            </div>
+            <div class="col col-7 col-md-4">
+                <select id="tipos" class="form-select m-1"  onchange="cambioInfo()">
+                    <% datos.envios.forEach((envio) => {%>
+                       <option value="<%= envio.IdP %>" <% if(filtros.tipo==envio.IdP) {%> selected <%}%>><%= envio.Descrip %></option>    
+                    <% }) %>
+                  </select>
+            </div>
+            <div class="col col-5 col-md-2">
+                <label for="es" class="form-control btn-info m-1">Estado: </label>
+            </div>
+            <div class="col col-7 col-md-4">
+                <select id="es" class="form-select m-1"  onchange="cambioInfo()">
+                       <option value="99" <% if(filtros.es==99) {%> selected <%}%>>Todos</option>    
+                       <option value="0" <% if(filtros.es==0) {%> selected <%}%>>Sin Asignar</option>    
+                       <option value="1" <% if(filtros.es==1) {%> selected <%}%>>En Camino</option>    
+                       <option value="2" <% if(filtros.es==2) {%> selected <%}%>>Entregados</option>    
+                  </select>
+            </div>
+          </div>
+        </form>
+        <% if (datos.entregas.length>0) { %>
+            <table class="table table-striped">
+                <thead>
+                    <tr align="center">
+                        <th>Cliente</th>
+                        <% datos.zonas.forEach((z) => {%>
+                            <th><%= z.nombre %></th>
+                        <%}) %>
+                    </tr>
+                </thead>
+                <tbody>
+                    <% datos.entregas.forEach((e) => {%>
+                        <% if(e.Nombre!='TOTAL PAQUETES') { %>
+                            <tr>
+                                <% if (e.Nombre!='TOTAL') { %>
+                                    <td><a href="/info/<%- e.Cliente %>?<%-query%>"><%= e.Nombre %></a></td>
+                                <% } else { %>
+                                    <td><%= e.Nombre %></td>
+                                <% } %>
+                                <% datos.zonas.forEach((z) => {%>
+                                    <td style="font-weight:bolder;" align="center"><%= e[z.nombre] %></td>
+                                <% }) %>
+                            </tr>
+                        <% } else { %>
+                            <tr class="btn-info">
+                                <td><%= e.Nombre %></td>
+                                <td colSpan="<%= datos.zonas.length %>" style="font-weight:bolder;" align="center"><%= e[datos.zonas[0].nombre] %></td
+                            </tr>
+                        <% } %>
+                    <% }) %>
+                </tbody>
+            </table>
+        <% } else { %>
+            <div class="alert alert-warning m-3" role="alert">
+                <strong>No hay Entregas para la fecha y Filtros Seleccionados</strong>
+            </div>
+        <% } %> 
+        </div>
+    </div>
+</div>
